@@ -80,7 +80,7 @@ def create_sliding_windows_first_dim(data: np.ndarray, sequence_length: int) -> 
     if sequence_length <= 0:
         raise ValueError("sequence_length must be greater than 0")
     if data.ndim != 3:
-        raise ValueError("data must be a 3D array (n_samples, n_timesteps, n_channels)")
+        raise ValueError("data must be a 3D array (n_samples, timesteps, features)")
     if sequence_length > data.shape[0]:
         raise ValueError("sequence_length cannot be larger than the number of samples")
 
@@ -92,8 +92,8 @@ def create_sliding_windows_first_dim(data: np.ndarray, sequence_length: int) -> 
     # -> (n_windows, sequence_length, timesteps, features)
     windows = windows.transpose(0, 3, 1, 2)
 
-    n_windows, seq_len, timesteps, features = windows.shape
-    return windows.reshape(n_windows, seq_len * timesteps, features)
+    n_windows, sequence_len, timesteps, features = windows.shape
+    return windows.reshape(n_windows, sequence_len * timesteps, features)
 
 def get_welding_data(path: Path, n_samples: int | None = None, return_sequences: bool = False, sequence_length: int = 100) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
